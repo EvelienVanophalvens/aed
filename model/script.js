@@ -45,6 +45,16 @@ async function loadMobileNetFeatureModel() {
 // Call the function immediately to start loading.
 loadMobileNetFeatureModel();
 
+const model = tf.sequential();
+model.add(tf.layers.dense({units: 100, activation: 'relu', inputShape: [1024]}));
+model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
+
+model.compile({
+  optimizer: tf.train.adam(1e-30),
+  loss: 'binaryCrossentropy',
+  metrics: ['accuracy']
+});
+
 
 
 function gatherDataForClass() {
