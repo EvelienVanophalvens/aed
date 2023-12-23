@@ -226,5 +226,14 @@ function logProgress(epoch, logs) {
 
 
 function reset() {
-    // TODO: Fill this out later in the codelab!
+    predict = false;
+    examplesCount.length = 0;
+    for (let i = 0; i < trainingDataInputs.length; i++) {
+      trainingDataInputs[i].dispose();
+    }
+    trainingDataInputs.length = 0;
+    trainingDataOutputs.length = 0;
+    STATUS.innerText = 'No data collected';
+    
+    console.log('Tensors in memory: ' + tf.memory().numTensors);
 }
