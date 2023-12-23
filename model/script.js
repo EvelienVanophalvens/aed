@@ -171,7 +171,57 @@ function dataGatherLoop() {
 
 
 function trainAndPredict() {
-    // TODO: Fill this out later in the codelab!
+    predict = false;
+    tf.util.shuffleCombo(trainingDataInputs, trainingDataOutputs);
+  
+    let outputsAsTensor = tf.tensor1d(trainingDataOutputs, 'float32'); // Change here
+    let inputsAsTensor = tf.stack(trainingDataInputs);
+    
+    let results = await model.fit(inputsAsTensor, outputsAsTensor, { // Change here
+      shuffle: true,
+      batchSize: 50,
+      epochs: 10,
+      callbacks: {onEpochEnd: logProgress}
+    });
+  
+      // Evaluate the model on the training data
+      const evalResult = model.evaluate(inputsAsTensor, outputsAsTensor);
+      console.log('Training data evaluation result:', evalResult);
+  
+      console.log('Inputs tensor:', inputsAsTensor);
+      console.log('Outputs tensor:', outputsAsTensor);
+  
+    // Dispose of tensors after fitting
+    outputsAsTensor.dispose();
+    inputsAsTensor.dispose();
+  
+    predict = true;
+    predictLoop();
+}
+
+async function predictLoop() {
+    let imageFeatures = await calculateFeaturesOnCurrentFrame();
+    
+    tf.tidy(function() {
+        let prediction = model.predict(imageFeatures.expandDims()).squeeze();
+        if (prediction.rank > 0) {
+            let highestIndex = prediction.argMax(0).dataSync()[0];
+            let predictionArray = prediction.arraySync();
+            STATUS.innerText = 'Prediction: ' + CLASS_NAMES[highestIndex] + ' with ' + Math.floor(predictionArray[highestIndex] * 100) + '% confidence';
+        } else {
+            // Handle the case where prediction is a scalar
+            let predictionValue = prediction.arraySync();
+            STATUS.innerText = 'Prediction: ' + (predictionValue > 0.5 ? CLASS_NAMES[1] : CLASS_NAMES[0]) + ' with ' + Math.floor(predictionValue * 100) + '% confidence';
+        }
+    });
+}
+
+
+/**
+ * Log training progress.
+ **/
+function logProgress(epoch, logs) {
+    console.log('Data for epoch ' + epoch, logs);
 }
 
 
