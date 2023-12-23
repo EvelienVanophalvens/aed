@@ -57,10 +57,93 @@ model.compile({
 
 
 
-function gatherDataForClass() {
-    // TODO: Fill this out later in the codelab!
-}
-
+async function gatherDataForClass() {
+    console.log('Gathering data for class ' + this.getAttribute('data-name'));
+    let classNumber = parseInt(this.getAttribute('data-1hot'));
+    gatherDataState = (gatherDataState === STOP_DATA_GATHER) ? classNumber : STOP_DATA_GATHER;
+  
+    // get all images from the aed's folder and store them in an array of image urls
+    let imageUrls = [
+        "data/aed_0.jpg",
+        "data/aed_1.jpg",
+        "data/aed_2.jpg",
+        "data/aed_3.jpg",
+        "data/aed_4.jpg",
+        "data/aed_5.jpg",
+        "data/aed_6.jpg",
+        "data/aed_7.jpg",
+        "data/aed_8.jpg",
+        "data/aed_9.jpg",
+        "data/aed_10.jpg",
+        "data/aed_11.jpg",
+        "data/aed_12.jpg",
+        "data/aed_13.jpg",
+        "data/aed_14.jpg",
+        "data/aed_15.jpg",
+        "data/aed_16.jpg",
+        "data/aed_17.jpg",
+        "data/aed_18.jpg",
+        "data/aed_19.jpg",
+        "data/aed_20.jpg",
+        "data/aed_21.jpg",
+        "data/aed_22.jpg",
+        "data/aed_23.jpg",
+        "data/aed_24.jpg",
+        "data/aed_25.jpg",
+        "data/aed_26.jpg",
+        "data/aed_27.jpg",
+        "data/aed_28.jpg",
+        "data/aed_29.jpg",
+        "data/aed_30.jpg",
+        "data/aed_31.jpg",
+        "data/aed_32.jpg",
+        "data/aed_33.jpg",
+        "data/aed_34.jpg",
+        "data/aed_35.jpg",
+        "data/aed_36.jpg",
+        "data/aed_37.jpg",
+        "data/aed_38.jpg",
+        "data/aed_39.jpg",
+        "data/aed_40.jpg",
+        "data/aed_41.jpg",
+        "data/aed_42.jpg",
+        "data/aed_43.jpg",
+        "data/aed_44.jpg",
+        "data/aed_45.jpg",
+        "data/aed_46.jpg",
+        "data/aed_47.jpg",
+        "data/aed_48.jpg",
+        "data/aed_49.jpg",
+    ];
+  
+    for (let i = 0; i < imageUrls.length; i++) {
+        console.log(imageUrls[i]);
+        let img = new Image();
+        img.src = imageUrls[i];
+        await new Promise((resolve) => img.onload = resolve);
+    
+        let imageFeatures = tf.tidy(() => {
+          let imgTensor = tf.browser.fromPixels(img);
+          let resizedTensorFrame = tf.image.resizeBilinear(
+              imgTensor, 
+              [MOBILE_NET_INPUT_HEIGHT, MOBILE_NET_INPUT_WIDTH],
+              true
+          );
+          let normalizedTensorFrame = resizedTensorFrame.div(255);
+          return mobilenet.predict(normalizedTensorFrame.expandDims()).squeeze();
+        });
+    
+        trainingDataInputs.push(imageFeatures);
+        trainingDataOutputs.push(gatherDataState);
+        
+        if (examplesCount[gatherDataState] === undefined) {
+          examplesCount[gatherDataState] = 0;
+          console.log(examplesCount[gatherDataState]);
+        }
+        examplesCount[gatherDataState]++;
+        document.getElementById("image").src = imageUrls[i];
+      }
+  }
 
 
 function trainAndPredict() {
