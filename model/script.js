@@ -8,7 +8,6 @@ const CLASS_NAMES = [];
 
 let mobilenet = undefined;
 let gatherDataState = STOP_DATA_GATHER;
-let videoPlaying = false;
 let trainingDataInputs = [];
 let trainingDataOutputs = [];
 let examplesCount = [];
@@ -144,6 +143,31 @@ async function gatherDataForClass() {
         document.getElementById("image").src = imageUrls[i];
       }
   }
+
+
+function dataGatherLoop() {
+    if (gatherDataState !== STOP_DATA_GATHER) {
+        // Ensure tensors are cleaned up.
+        let imageFeatures = calculateFeaturesOnCurrentFrame();
+    
+        trainingDataInputs.push(imageFeatures);
+        trainingDataOutputs.push(gatherDataState);
+        
+        // Intialize array index element if currently undefined.
+        if (examplesCount[gatherDataState] === undefined) {
+          examplesCount[gatherDataState] = 0;
+        }
+        // Increment counts of examples for user interface to show.
+        examplesCount[gatherDataState]++;
+    
+        STATUS.innerText = '';
+        for (let n = 0; n < CLASS_NAMES.length; n++) {
+          STATUS.innerText += CLASS_NAMES[n] + ' data count: ' + examplesCount[n] + '. ';
+        }
+    
+        window.requestAnimationFrame(dataGatherLoop);
+      }
+}
 
 
 function trainAndPredict() {
