@@ -169,6 +169,43 @@ function dataGatherLoop() {
       }
 }
 
+let currentImageIndex = 0;
+  let imageUrls = [
+      "testData/aed_0.jpg",
+      "testData/aed_1.jpeg",
+      "testData/aed_3.jpeg",
+      "testData/aed_4.jpg",
+  ];
+
+
+  async function calculateFeaturesOnCurrentFrame() {
+    console.log(imageUrls[currentImageIndex]);
+    // Load the image
+    let img = new Image();
+    img.src = imageUrls[currentImageIndex];
+    await new Promise((resolve) => img.onload = resolve);
+
+    //set image to image tag
+    document.getElementById("image").src = imageUrls[currentImageIndex];
+    return tf.tidy(function() {
+      // Grab pixels from current image.
+      let imageAsTensor = tf.browser.fromPixels(img);
+      // Resize image tensor to be 224 x 224 pixels which is needed by MobileNet for input.
+      let resizedTensorFrame = tf.image.resizeBilinear(
+          imageAsTensor, 
+          [MOBILE_NET_INPUT_HEIGHT, MOBILE_NET_INPUT_WIDTH],
+          true
+      );
+  
+      let normalizedTensorFrame = resizedTensorFrame.div(255);
+  
+      // Increment the current image index so the next image is used next time
+      currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+  
+      return mobilenet.predict(normalizedTensorFrame.expandDims()).squeeze();
+    });
+  }
+
 
 function trainAndPredict() {
     predict = false;
