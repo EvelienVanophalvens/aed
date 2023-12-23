@@ -1,4 +1,5 @@
 const STATUS = document.getElementById('status');
+const VIDEO = document.getElementById('webcam');
 const RESET_BUTTON = document.getElementById('reset');
 const TRAIN_BUTTON = document.getElementById('train');
 const MOBILE_NET_INPUT_WIDTH = 224;
@@ -6,43 +7,53 @@ const MOBILE_NET_INPUT_HEIGHT = 224;
 const STOP_DATA_GATHER = -1;
 const CLASS_NAMES = [];
 
+TRAIN_BUTTON.addEventListener('click', trainAndPredict);
+RESET_BUTTON.addEventListener('click', reset);
+
+// Just add more buttons in HTML to allow classification of more classes of data!
+let dataCollectorButtons = document.querySelectorAll('button.dataCollector');
+for (let i = 0; i < dataCollectorButtons.length; i++) {
+  dataCollectorButtons[i].addEventListener('mouseup', gatherDataForClass);
+  // For mobile.
+  dataCollectorButtons[i].addEventListener('touchend', gatherDataForClass);
+
+  // Populate the human readable names for classes.
+  CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
+}
+
+
 let mobilenet = undefined;
 let gatherDataState = STOP_DATA_GATHER;
+let videoPlaying = false;
 let trainingDataInputs = [];
 let trainingDataOutputs = [];
 let examplesCount = [];
 let predict = false;
-
-TRAIN_BUTTON.addEventListener('click', trainAndPredict);
-RESET_BUTTON.addEventListener('click', reset);
-
-let dataCollectorButtons = document.querySelectorAll('button.dataCollector');
-for (let i = 0; i < dataCollectorButtons.length; i++) {
-  dataCollectorButtons[i].addEventListener('mouseup', gatherDataForClass);
-  // Populate the human readable names for classes.
-  CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
-}
 
 
 /**
  * Loads the MobileNet model and warms it up so ready for use.
  **/
 async function loadMobileNetFeatureModel() {
-    const URL = 
-      'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v3_small_100_224/feature_vector/5/default/1';
-    
-    mobilenet = await tf.loadGraphModel(URL, {fromTFHub: true});
-    STATUS.innerText = 'MobileNet v3 loaded successfully!';
-    
-    // Warm up the model by passing zeros through it once.
-    tf.tidy(function () {
-      let answer = mobilenet.predict(tf.zeros([1, MOBILE_NET_INPUT_HEIGHT, MOBILE_NET_INPUT_WIDTH, 3]));
-      console.log(answer.shape);
-    });
-}
+  const URL = 'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v3_small_100_224/feature_vector/5/default/1';
+  mobilenet = await tf.loadGraphModel(URL, {fromTFHub: true});
+  STATUS.innerText = 'MobileNet v3 loaded successfully!';
   
-// Call the function immediately to start loading.
+  // Warm up the model by passing zeros through it once.
+  tf.tidy(function () {
+    let answer = mobilenet.predict(tf.zeros([1, MOBILE_NET_INPUT_HEIGHT, MOBILE_NET_INPUT_WIDTH, 3]));
+    console.log(answer.shape);
+  });
+}
+
 loadMobileNetFeatureModel();
+
+
+for (let i = 0; i < dataCollectorButtons.length; i++) {
+  dataCollectorButtons[i].addEventListener('mouseup', gatherDataForClass);
+  // Populate the human readable names for classes.
+  CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
+}
 
 const model = tf.sequential();
 model.add(tf.layers.dense({units: 100, activation: 'relu', inputShape: [1024]}));
@@ -207,7 +218,7 @@ let currentImageIndex = 0;
   }
 
 
-function trainAndPredict() {
+  async function trainAndPredict() {
     predict = false;
     tf.util.shuffleCombo(trainingDataInputs, trainingDataOutputs);
   
@@ -232,9 +243,11 @@ function trainAndPredict() {
     outputsAsTensor.dispose();
     inputsAsTensor.dispose();
   
+  
+  
     predict = true;
     predictLoop();
-}
+  }
 
 async function predictLoop() {
     let imageFeatures = await calculateFeaturesOnCurrentFrame();

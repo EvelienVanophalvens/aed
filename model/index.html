@@ -5,18 +5,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
   </head>  
   <body>
     <h1>Training the model for aed detectation using tranfer learning with MobileNet V3 TensorFlow.js</h1>
-    
+    <p id="status">Awaiting TF.js load</p>
+
+    <img id="image" src="" crossorigin="anonymous" width="227" height="227" />
+
     <button class="dataCollector" data-1hot="0" data-name="aed">Gather aed Data</button>
     <button id="train">Train &amp; Predict!</button>
+    <button id="reset">reset</button>
     <!-- Import TensorFlow.js library -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js" type="text/javascript"></script>
 
     <!-- Import the page's JavaScript to do some stuff -->
-    <script type="module" src="/script.js"></script>
+    <script type="module" src="./script.js"></script>
   </body>
 </html>
