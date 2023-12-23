@@ -9,6 +9,19 @@ const CLASS_NAMES = [];
 TRAIN_BUTTON.addEventListener('click', trainAndPredict);
 RESET_BUTTON.addEventListener('click', reset);
 
+let dataCollectorButtons = document.querySelectorAll('button.dataCollector');
+for (let i = 0; i < dataCollectorButtons.length; i++) {
+  dataCollectorButtons[i].addEventListener('mouseup', gatherDataForClass);
+  // Populate the human readable names for classes.
+  CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
+}
+
+function gatherDataForClass() {
+    // TODO: Fill this out later in the codelab!
+}
+
+
+
 function trainAndPredict() {
     // TODO: Fill this out later in the codelab!
 }
