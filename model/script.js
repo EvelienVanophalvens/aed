@@ -244,10 +244,33 @@ let currentImageIndex = 0;
     inputsAsTensor.dispose();
   
   
-  
     predict = true;
     predictLoop();
+
+    const saveResults = await model.save('downloads://my-model');
+    console.log(saveResults);
+     
   }
+  /*async function loadModelAndPredict() {
+    console.log('Loading model...');  
+    try {
+      // Load the model from the file.
+      const loadedModel = await tf.loadLayersModel('./my-model.json');
+  
+      // Dispose of the existing model to free up memory
+      loadedModel.dispose(); 
+      
+      // Assign the loaded model to the global 'model' variable
+  
+      // Start predictions with the loaded model
+      predict = true;
+      predictLoop();
+    } catch (error) {
+      console.error('Error loading the model:', error);
+    }
+  }*/
+
+
 
 async function predictLoop() {
     let imageFeatures = await calculateFeaturesOnCurrentFrame();
