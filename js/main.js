@@ -21,7 +21,8 @@ window.onload = async function() {
     if (predictionLabel > 0.5) {
         console.log("The image is an AED.");
         //add yes to the localstorage
-        document.querySelector('.succes').style.display = 'block';
+        document.querySelector('.adding').style.display = 'block';
+        document.querySelector('.succes').style.display = 'none';
         document.querySelector('.error').style.display = 'none';
         document.querySelector('.placingerror').style.display = 'none';
         document.querySelector('.angleerror').style.display = 'none';
@@ -51,7 +52,10 @@ window.onload = async function() {
                             document.getElementById('city').innerHTML = city;
                             document.getElementById('street').innerHTML = street;
                             //add to database
-                            
+
+                            //added to db
+                            document.querySelector('.adding').style.display = 'none';
+                            document.querySelector('.succes').style.display = 'block';
                         }
                         )
                     .catch(error => console.log('error', error));
