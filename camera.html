@@ -26,11 +26,14 @@
     const canvas = document.getElementById('canvas');
 
     navigator.mediaDevices.getUserMedia({ 
-    video: { facingMode: { exact: "environment" } } 
+    video: { facingMode: { ideal: "environment" } } 
     })
-        .then(stream => {
-            video.srcObject = stream;
-        });
+    .then(stream => {
+        video.srcObject = stream;
+    })
+    .catch(error => {
+    console.error("Error accessing media devices.", error);
+    });
 
     shutter.addEventListener('click', () => {
         canvas.width = video.videoWidth;
