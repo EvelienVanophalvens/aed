@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>AED finder</title>
+</head>
+<body>
+    <header>
+        <h1>AED Finder</h1>
+    </header>
+    <div class="notsupported"><h1>AED Finder is not supported on this device</h1></div>
+    <section class="app">
+        <video id="video" autoplay></video>
+        <div class="bottom">
+            <button id="shutter"></button>
+        </div>
+        <canvas id="canvas" style="display:none;"></canvas>
+    </section>
+</body>
+</html>
+<script>
+    const video = document.getElementById('video');
+    const shutter = document.getElementById('shutter');
+    const canvas = document.getElementById('canvas');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        });
+
+    shutter.addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        const imgData = canvas.toDataURL('image/png');
+        // Save imgData to localStorage
+        localStorage.setItem('capturedImage', imgData);
+        // Redirect to add.html
+        window.location.href = 'add.html';
+    });
+</script>
