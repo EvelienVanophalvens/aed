@@ -142,10 +142,25 @@ header h1{
     margin-left: auto;
     margin-right: auto;
 }
+.placingerror{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
 .angle{
     text-align: center;
 }
+.angleerror{
+    text-align: center;
+}
 .app a.addnew{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+    margin-top: 0;
+}
+.app a.addnewerror{
     width: 200px;
     margin-left: auto;
     margin-right: auto;
