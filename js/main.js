@@ -1,5 +1,16 @@
 let model;
 window.onload = async function() {
+    //get location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        }, function(error) {
+            console.error("Error occurred while getting location: " + error.message);
+        });
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
+
+    //load model
     const imgData = localStorage.getItem('capturedImage');
     const imgElement = document.getElementById('capturedimg');
     imgElement.src = imgData;
@@ -22,10 +33,19 @@ window.onload = async function() {
         //add to database
 
         //add yes to the localstorage
-        localStorage.setItem('aed', 'true');
+        document.querySelector('.succes').style.display = 'block';
+        document.querySelector('.error').style.display = 'none';
+        document.querySelector('.placingerror').style.display = 'none';
+        document.querySelector('.angleerror').style.display = 'none';
+        document.querySelector('.addnewerror').style.display = 'none';
     } else {
         console.log("The image is not an AED.");
         console.log(predictionLabel);
-        localStorage.setItem('aed', 'false');
+        document.querySelector('.succes').style.display = 'none';
+        document.querySelector('.error').style.display = 'block';
+        document.querySelector('.iferror').style.display = 'block';
+        document.querySelector('.placing').style.display = 'none';
+        document.querySelector('.angle').style.display = 'none';
+        document.querySelector('.addnew').style.display = 'none';
     }
 };

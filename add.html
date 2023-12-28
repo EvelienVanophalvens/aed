@@ -22,9 +22,15 @@
             <p>AED added around</p>
             <span><p id="city"></p><p> - </p><p id="street"></p></span>
         </div>
+        <div class="placingerror" style="margin-bottom: 80px; text-align: center;">
+            <p>Aed wasn't added</p>
+        </div>
 
         <p class="angle">Add AED from another angle</p>
         <a class="addnew" href="camera.html">Add</a>
+
+        <p class="angleerror">Try again?</p>
+        <a class="addnewerror" href="camera.html">Go</a>
     </section>
     <footer>
         <p>Something wrong?</p>
@@ -32,17 +38,3 @@
     </footer>
 </body>
 </html>
-<script>
-    let isaed = localStorage.getItem('aed');
-    console.log(isaed);
-    if(isaed == 'true'){
-        document.querySelector('.succes').style.display = 'block';
-        document.querySelector('.error').style.display = 'none';
-        localStorage.removeItem('aed');
-    }
-    else{
-        document.querySelector('.succes').style.display = 'none';
-        document.querySelector('.error').style.display = 'block';
-        localStorage.removeItem('aed');
-    }
-</script>
