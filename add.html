@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="/aed/js/main.js"></script>
     <title>AED finder</title>
 </head>
 <body>
@@ -31,9 +33,16 @@
 </body>
 </html>
 <script>
-    window.onload = function() {
-        const imgData = localStorage.getItem('capturedImage');
-        const imgElement = document.getElementById('capturedimg');
-        imgElement.src = imgData;
-    };
+    let isaed = localStorage.getItem('aed');
+    console.log(isaed);
+    if(isaed == 'true'){
+        document.querySelector('.succes').style.display = 'block';
+        document.querySelector('.error').style.display = 'none';
+        localStorage.removeItem('aed');
+    }
+    else{
+        document.querySelector('.succes').style.display = 'none';
+        document.querySelector('.error').style.display = 'block';
+        localStorage.removeItem('aed');
+    }
 </script>
