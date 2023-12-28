@@ -1,0 +1,115 @@
+@import url("https://use.typekit.net/jvl1kge.css");
+:root{
+    /* main color */
+    --main-color: #2D7E7C;
+    --main-color-light: #51B797;
+    /* secondary color */
+    --secondary-color: #505CA5;
+    --secondary-color-light: #6F79B9;
+    /* call to action color */
+    --cta-color: #EF795C;
+    --cta-color-light: #EE9A79;
+    /* semantic  colors */
+    --success-color: #29CF4E;
+    --warning-color: #E51C1C;
+    --info-color: #4770FF;
+    /* neutral colors */
+    --white-color: #FFFDFA;
+    --cream-color: #FFF5E0;
+    --whitegray-color: #D9D9D9;
+    --gray-color: rgb(248, 248, 248);
+    --black-color: #262626;
+}
+body{
+    font-family: proxima-soft, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--black-color);
+    background-color: var(--white-color);
+    margin: 0;
+}
+.notsupported{
+    display: none;
+}
+.app{
+    display: block;
+}
+header{
+    background-color: var(--main-color);
+    width: 100vw;
+    height: 10vh;
+}
+header h1{
+    font-family: proxima-soft, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 36px;
+    line-height: 1.5;
+    color: var(--white-color);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    padding-top: 10px;
+}
+.app a{
+    display: block;
+    text-align: center;
+    font-size: 36px;
+    text-decoration: none;
+    color: var(--white-color);
+    background-color: #505CA5;
+    border-radius: 10px;
+    margin-top: 30vh;
+    width: 70vw;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 15vw;
+    word-wrap: break-word;
+}
+#video{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100vw;
+    height: 80vh;
+    object-fit: cover;
+}
+#shutter {
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 30px);
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--whitegray-color);
+    box-shadow: 0 0 0 5px #fff, 0 0 0 10px var(--whitegray-color);
+    transition: background 0.1s ease-in-out;
+}
+#shutter:active {
+    background:  var(--whitegray-color);
+}
+.bottom{
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 10vh;
+    background-color: var(--whitegray-color);
+}
+@media screen and (min-width: 700px){
+    .notsupported{
+        display: block;
+        text-align: center;
+        background-color: #E9461E;
+        color: #F1BBAE;
+        width: 96vw;
+        margin-left: 2vw;
+        border-radius: 10px;
+    }
+    .app{
+        display: none;
+    }
+}
