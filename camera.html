@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>AED Finder</h1>
+        <a href="index.html"><h1>AED Finder</h1></a>
     </header>
     <div class="notsupported"><h1>AED Finder is not supported on this device</h1></div>
     <section class="app">
@@ -25,7 +25,9 @@
     const shutter = document.getElementById('shutter');
     const canvas = document.getElementById('canvas');
 
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ 
+    video: { facingMode: { exact: "environment" } } 
+    })
         .then(stream => {
             video.srcObject = stream;
         });
