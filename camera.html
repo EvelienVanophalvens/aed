@@ -25,15 +25,22 @@
     const shutter = document.getElementById('shutter');
     const canvas = document.getElementById('canvas');
 
-    navigator.mediaDevices.getUserMedia({ 
-    video: { facingMode: { ideal: "environment" } } 
-    })
-    .then(stream => {
-        video.srcObject = stream;
-    })
-    .catch(error => {
-    console.error("Error accessing media devices.", error);
-    });
+    if(navigator.mediaDevices.getUserMedia){
+        navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: { ideal: "environment" } } 
+        })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(error => {
+        console.error("Error accessing media devices.", error);
+        });
+    }
+    else{
+        console.log('getUserMedia not supported');
+    
+    }
+
 
     shutter.addEventListener('click', () => {
         canvas.width = video.videoWidth;
