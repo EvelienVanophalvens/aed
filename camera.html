@@ -35,7 +35,9 @@
         canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 0, 0);
         const imgData = canvas.toDataURL('image/png');
-        // imgData is the captured image, you can save or display it
-        
+        // Save imgData to localStorage
+        localStorage.setItem('capturedImage', imgData);
+        // Redirect to add.html
+        window.location.href = 'add.html';
     });
 </script>

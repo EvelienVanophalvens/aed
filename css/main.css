@@ -99,6 +99,85 @@ header h1{
     height: 10vh;
     background-color: var(--whitegray-color);
 }
+
+
+/* add */
+#capturedimg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-top: 20px;
+}
+.succes{
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #69F3A8;
+    background-color: #4BAE78;
+    word-wrap: break-word;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.error{
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #F1BBAE;
+    background-color: #E9461E;
+    word-wrap: break-word;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.placing{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.angle{
+    text-align: center;
+}
+.app a.addnew{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+    margin-top: 0;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 20vh;
+    width: 100vw;
+    background-color: var(--whitegray-color);
+}
+footer p{
+    text-align: center;
+}
+footer button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    color: #F1BBAE;
+    background-color: #E9461E;
+    border-radius: 10px;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 150px;
+    font-size: 16px;
+}
+
 @media screen and (min-width: 700px){
     .notsupported{
         display: block;
