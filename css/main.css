@@ -30,6 +30,9 @@ body{
     background-color: var(--white-color);
     margin: 0;
 }
+a{
+    text-decoration: none;
+}
 .notsupported{
     display: none;
 }
@@ -149,6 +152,7 @@ header h1{
 }
 .angle{
     text-align: center;
+    margin-top: 40px;
 }
 .angleerror{
     text-align: center;
@@ -192,7 +196,12 @@ footer button{
     width: 150px;
     font-size: 16px;
 }
-
+span.adress{
+    white-space: nowrap;
+}
+span.adress p{
+    display: inline;
+}
 @media screen and (min-width: 700px){
     .notsupported{
         display: block;

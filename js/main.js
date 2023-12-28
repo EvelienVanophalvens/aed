@@ -1,15 +1,39 @@
 let model;
 window.onload = async function() {
-    //get location
+    // Get location
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(async function(position) {
+            console.log("Latitude: " + position.coords.latitude);
+            console.log("Longitude: " + position.coords.longitude);
+
+            // Set location to address
+            var requestOptions = {
+                method: 'GET',
+            };
+
+            // Use the latitude and longitude in the fetch URL
+            let url = `https://api.geoapify.com/v1/geocode/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&apiKey=8a4cb43d586846008016b65d159b0d37`;
+
+            fetch(url, requestOptions)
+                .then(response => response.json())
+                // .then(result => console.log(result))
+                .then(result => {
+                        city = result['features'][0].properties.city;
+                        console.log(city);
+                        street = result['features'][0].properties.street + " " + result['features'][0].properties.housenumber;
+                        console.log(street);
+                        document.getElementById('city').innerHTML = city;
+                        document.getElementById('street').innerHTML = street;
+                    }
+                    )
+                .catch(error => console.log('error', error));
         }, function(error) {
             console.error("Error occurred while getting location: " + error.message);
         });
     } else {
         console.error("Geolocation is not supported by this browser.");
     }
-
+    
     //load model
     const imgData = localStorage.getItem('capturedImage');
     const imgElement = document.getElementById('capturedimg');
@@ -43,7 +67,6 @@ window.onload = async function() {
         console.log(predictionLabel);
         document.querySelector('.succes').style.display = 'none';
         document.querySelector('.error').style.display = 'block';
-        document.querySelector('.iferror').style.display = 'block';
         document.querySelector('.placing').style.display = 'none';
         document.querySelector('.angle').style.display = 'none';
         document.querySelector('.addnew').style.display = 'none';
