@@ -26,10 +26,12 @@
     const canvas = document.getElementById('canvas');
 
     if(navigator.mediaDevices.getUserMedia){
+        console.log('getUserMedia supported');
         navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: { ideal: "environment" } } 
         })
         .then(stream => {
+            console.log(stream);
             video.srcObject = stream;
         })
         .catch(error => {
