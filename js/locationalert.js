@@ -1,4 +1,3 @@
-let model;
 window.onload = async function() {
     //get location
     if (navigator.geolocation) {
