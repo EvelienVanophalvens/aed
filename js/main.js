@@ -51,9 +51,9 @@ window.onload = async function() {
                             console.log(street);
                             document.getElementById('city').innerHTML = city;
                             document.getElementById('street').innerHTML = street;
-                            //add to database
-
-                            //added to db
+                            //send to db
+                            
+                            //added to db (still have to do it right after failure AND succes of db adding)
                             document.querySelector('.adding').style.display = 'none';
                             document.querySelector('.succes').style.display = 'block';
                         }
@@ -68,6 +68,7 @@ window.onload = async function() {
     } else {
         console.log("The image is not an AED.");
         console.log(predictionLabel);
+        document.querySelector('.adding').style.display = 'none';
         document.querySelector('.succes').style.display = 'none';
         document.querySelector('.error').style.display = 'block';
         document.querySelector('.placing').style.display = 'none';
