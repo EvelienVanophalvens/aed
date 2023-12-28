@@ -61,7 +61,7 @@ header h1{
     text-align: center;
     font-size: 36px;
     text-decoration: none;
-    color: var(--white-color);
+    color: #c8cfff;
     background-color: #505CA5;
     border-radius: 10px;
     margin-top: 30vh;
@@ -140,11 +140,25 @@ header h1{
     padding-top: 10px;
     padding-bottom: 10px;
 }
+.adding{
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #c8cfff;
+    background-color: #505CA5;
+    word-wrap: break-word;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 .placing{
     width: 200px;
     margin-left: auto;
     margin-right: auto;
 }
+
 .placingerror{
     width: 200px;
     margin-left: auto;
