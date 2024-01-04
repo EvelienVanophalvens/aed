@@ -17,7 +17,7 @@ for (let i = 0; i < dataCollectorButtons.length; i++) {
   // For mobile.
   dataCollectorButtons[i].addEventListener('touchend', gatherDataForClass);
 
-  // Populate the human readable names for classes.
+  // Populate the human readable names for classes. get the class names from the data-name attribute
   CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
 }
 
@@ -55,9 +55,14 @@ for (let i = 0; i < dataCollectorButtons.length; i++) {
   CLASS_NAMES.push(dataCollectorButtons[i].getAttribute('data-name'));
 }
 
+//define model architecture
+
 const model = tf.sequential();
 model.add(tf.layers.dense({units: 100, activation: 'relu', inputShape: [1024]}));
 model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
+
+//compile model with adam optimizer and binary crossentropy loss function, set the optimizer learning rate to 1e-30 for beter accuracy
+//biggest problem of the model was the low accuracy, so i tried to set the learning rate to a very low value
 
 model.compile({
   optimizer: tf.train.adam(1e-30),
@@ -125,13 +130,14 @@ async function gatherDataForClass() {
         "data/aed_48.jpg",
         "data/aed_49.jpg",
     ];
-  
+    
+    // loop through all images and calculate the features for each image
     for (let i = 0; i < imageUrls.length; i++) {
         console.log(imageUrls[i]);
         let img = new Image();
         img.src = imageUrls[i];
         await new Promise((resolve) => img.onload = resolve);
-    
+    //set image to image tag
         let imageFeatures = tf.tidy(() => {
           let imgTensor = tf.browser.fromPixels(img);
           let resizedTensorFrame = tf.image.resizeBilinear(
@@ -142,10 +148,10 @@ async function gatherDataForClass() {
           let normalizedTensorFrame = resizedTensorFrame.div(255);
           return mobilenet.predict(normalizedTensorFrame.expandDims()).squeeze();
         });
-    
+        // add the image features to the training data inputs and the class number to the training data outputs
         trainingDataInputs.push(imageFeatures);
         trainingDataOutputs.push(gatherDataState);
-        
+        // Intialize array index element if currently undefined.
         if (examplesCount[gatherDataState] === undefined) {
           examplesCount[gatherDataState] = 0;
           console.log(examplesCount[gatherDataState]);
@@ -155,7 +161,7 @@ async function gatherDataForClass() {
       }
   }
 
-
+// Start the webcam stream when the window loads (not used in this example)
 function dataGatherLoop() {
     if (gatherDataState !== STOP_DATA_GATHER) {
         // Ensure tensors are cleaned up.
@@ -180,6 +186,7 @@ function dataGatherLoop() {
       }
 }
 
+// set the test data
 let currentImageIndex = 0;
   let imageUrls = [
       "testData/aed_0.jpg",
@@ -188,7 +195,7 @@ let currentImageIndex = 0;
       "testData/aed_4.jpg",
   ];
 
-
+// calculate the features for the current image
   async function calculateFeaturesOnCurrentFrame() {
     console.log(imageUrls[currentImageIndex]);
     // Load the image
@@ -217,14 +224,14 @@ let currentImageIndex = 0;
     });
   }
 
-
+// train the model
   async function trainAndPredict() {
     predict = false;
     tf.util.shuffleCombo(trainingDataInputs, trainingDataOutputs);
-  
+  // Convert training data to tensors.
     let outputsAsTensor = tf.tensor1d(trainingDataOutputs, 'float32'); // Change here
     let inputsAsTensor = tf.stack(trainingDataInputs);
-    
+    // Train the model! Model.fit() will shuffle xs & ys so we don't have to.
     let results = await model.fit(inputsAsTensor, outputsAsTensor, { // Change here
       shuffle: true,
       batchSize: 50,
@@ -246,7 +253,7 @@ let currentImageIndex = 0;
   
     predict = true;
     predictLoop();
-
+    // save the model
     const saveResults = await model.save('downloads://my-model');
     console.log(saveResults);
      
@@ -271,7 +278,7 @@ let currentImageIndex = 0;
   }*/
 
 
-
+// predict the class of the current (test) image, and display the result with the confidence
 async function predictLoop() {
     let imageFeatures = await calculateFeaturesOnCurrentFrame();
     
